@@ -1,14 +1,23 @@
 import './App.css';
-import { myController } from './controller/callAPI';
+// import Abba from '../src/view/Abba'
+// import Button from '@mui/material/Button';
+import React, { useState, useEffect } from 'react';
+import { CallAPI } from './controller/callAPI';
+import Abba from './view/Abba';
 
 function App() {
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    setData(CallAPI)
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        Hello React
-        <button id="getDataBtn" onClick={myController.getUsers}>Get Data</button>
-        {/* <Abba></Abba> */}
-      </header>
+      {!data && <p>Loading data. Wait please</p>}
+      {data && typeof (data) === 'string' && <p>Something went wrong</p>}
+      {data && typeof (data) !== 'string' && data.length &&
+        <Abba props={data} />}
     </div>
   );
 }
