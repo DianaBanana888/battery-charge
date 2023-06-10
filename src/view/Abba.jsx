@@ -23,7 +23,6 @@ export default function Abba({ props }) {
 
   function Row(props) {
     const { row } = props;
-
     return (
       <React.Fragment>
         <TableRow onClick={() => setOpen({ show: open.openAcademyInfo !== row.academyId ? true : !open.show, openAcademyInfo: open.openAcademyInfo !== row.academyId ? row.academyId : 0 })}>
@@ -38,14 +37,14 @@ export default function Abba({ props }) {
           <TableCell component="th" scope="row">
             {row.academyId}
           </TableCell>
-          <TableCell align="right">{row.academyDetails.length}</TableCell>
-          <TableCell align="right"
+          <TableCell align="center">{row.academyDetails.length}</TableCell>
+          <TableCell align="center"
             sx={{ fontWeight: row.issues > 0 && 'bold' }}
           >{row.issues}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open.show && open.openAcademyInfo === row.academyId} timeout={5000} unmountOnExit={true}>
+            <Collapse in={open.show && open.openAcademyInfo === row.academyId} timeout='auto' unmountOnExit>
               <Box
                 sx={{
                   margin: 1,
@@ -105,8 +104,8 @@ export default function Abba({ props }) {
             <TableRow>
               <TableCell />
               <TableCell>AcademyId</TableCell>
-              <TableCell align="right">Number of Batteries</TableCell>
-              <TableCell align="right">Issues</TableCell>
+              <TableCell align="center">Number of Batteries</TableCell>
+              <TableCell align="center">Issues</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
