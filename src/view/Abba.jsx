@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { schoolList } from "../model/getSchoolList"
 import { batteryList } from "../model/getBatteryList"
 import { batteryStatus } from "../model/getBatteryStatus"
+import { sortByIssues } from "../model/sortByIssues"
 
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -18,27 +19,20 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 export default function Abba({ props }) {
-
-  function calculateIssues(array) {
-    var total = 0;
-    array.forEach((item) => !isNaN(item.consumption) && item.consumption > 0.3 &&
-      total++);
-    return total || 0;
-  };
+  const [open, setOpen] = useState({ show: false, openAcademyInfo: 0 });
 
   function Row(props) {
     const { row } = props;
-    const [open, setOpen] = useState(false);
 
     return (
       <React.Fragment>
-        <TableRow onClick={() => setOpen(!open)}>
+        <TableRow onClick={() => setOpen({ show: open.openAcademyInfo !== row.academyId ? true : !open.show, openAcademyInfo: open.openAcademyInfo !== row.academyId ? row.academyId : 0 })}>
           {row.academyDetails.length && <TableCell>
             <IconButton
               aria-label="expand row"
               size="small"
             >
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              {(open.show && open.openAcademyInfo === row.academyId) ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>}
           <TableCell component="th" scope="row">
@@ -46,12 +40,12 @@ export default function Abba({ props }) {
           </TableCell>
           <TableCell align="right">{row.academyDetails.length}</TableCell>
           <TableCell align="right"
-            sx={{ fontWeight: calculateIssues(row.academyDetails) > 0 && 'bold' }}
-          >{calculateIssues(row.academyDetails)}</TableCell>
+            sx={{ fontWeight: row.issues > 0 && 'bold' }}
+          >{row.issues}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
+            <Collapse in={open.show && open.openAcademyInfo === row.academyId} timeout={5000} unmountOnExit={true}>
               <Box
                 sx={{
                   margin: 1,
@@ -59,7 +53,7 @@ export default function Abba({ props }) {
                   display: 'inline-block',
                 }}>
                 <Typography component="div" align="center">
-                  Detailed description
+                  Detailed description for {row.academyId}
                 </Typography>
                 <Table size="small">
                   <TableHead>
@@ -71,7 +65,8 @@ export default function Abba({ props }) {
                   <TableBody>
                     {row.academyDetails.map((battery) => (
                       <TableRow key={battery.serialNumber} >
-                        <TableCell component="th" scope="row">
+                        <TableCell component="th" scope="row"
+                          sx={{ fontWeight: !isNaN(battery.consumption) && battery.consumption > 0.3 && 'bold' }}>
                           {battery.serialNumber}
                         </TableCell>
                         <TableCell align="right"
@@ -94,7 +89,7 @@ export default function Abba({ props }) {
   const getSchoolsList = schoolList(props)
   const getBatteryList = getSchoolsList.map((school) => Object.assign({}, { 'academyId': school.academyId }, { 'academyDetails': batteryList(school.academyDetails) }))
   getBatteryList.map((school) => school.academyDetails.map((battery) => battery.consumption = batteryStatus(battery.batteryDetails)))
-  console.log('getBatteryList', getBatteryList)
+  sortByIssues(getBatteryList);
   ///////////////////data calls
   return (
     <div className="Abba">
