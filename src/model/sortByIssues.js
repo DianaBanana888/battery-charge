@@ -7,7 +7,7 @@ const calculatedIssues = (array) => {
 
 const sortByIssues = (props) => {
   const newArray = props;
-  newArray.forEach((academy) => (
+  newArray?.forEach((academy) => (
     academy.issues = calculatedIssues(academy.academyDetails))
   );
 

@@ -10,7 +10,8 @@ const getInfo = (item) => (
 
 const batteryList = (arrayWithAcademyDetails) => {
   let generatedUnicorn = [];
-  arrayWithAcademyDetails.map((item) => (
+  const newArray = arrayWithAcademyDetails;
+  newArray?.map((item) => (
     !generatedUnicorn.find((el) => el.serialNumber === item.serialNumber)
       ? generatedUnicorn.push({
         'serialNumber': item.serialNumber,

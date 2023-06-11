@@ -9,7 +9,8 @@ const getInfo = (item) => (
 )
 const schoolList = (props) => {
   let generatedUnicorn = [];
-  props.map((item) => (
+  const newArray = props;
+  newArray?.map((item) => (
     generatedUnicorn.find((el) => el.academyId === item.academyId)
       ? generatedUnicorn.find((el) => el.academyId === item.academyId).academyDetails.push(
         getInfo(item)

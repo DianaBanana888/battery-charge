@@ -18,7 +18,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-export default function Abba({ props }) {
+export default function SchoolBatteryInformation({ props }) {
   const [open, setOpen] = useState({ show: false, openAcademyInfo: 0 });
 
   function Row(props) {
@@ -34,7 +34,7 @@ export default function Abba({ props }) {
               {(open.show && open.openAcademyInfo === row.academyId) ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>}
-          <TableCell component="th" scope="row">
+          <TableCell align="center" component="th" scope="row">
             {row.academyId}
           </TableCell>
           <TableCell align="center">{row.academyDetails.length}</TableCell>
@@ -51,7 +51,7 @@ export default function Abba({ props }) {
                   width: 0.75,
                   display: 'inline-block',
                 }}>
-                <Typography component="div" align="center">
+                <Typography component="div" align="center" sx={{ fontSize: 'default' }}>
                   Detailed description for {row.academyId}
                 </Typography>
                 <Table size="small">
@@ -84,15 +84,14 @@ export default function Abba({ props }) {
   }
 
 
-  ///////////////////data calls
+  //////////////////
   const getSchoolsList = schoolList(props)
   const getBatteryList = getSchoolsList.map((school) => Object.assign({}, { 'academyId': school.academyId }, { 'academyDetails': batteryList(school.academyDetails) }))
   getBatteryList.map((school) => school.academyDetails.map((battery) => battery.consumption = batteryStatus(battery.batteryDetails)))
   sortByIssues(getBatteryList);
-  ///////////////////data calls
-  return (
-    <div className="Abba">
 
+  return (
+    <div className="school-battery-information">
       <TableContainer component={Paper}
         sx={{
           width: { sm: 1, md: 1 / 2 },
@@ -103,8 +102,8 @@ export default function Abba({ props }) {
           <TableHead>
             <TableRow>
               <TableCell />
-              <TableCell>AcademyId</TableCell>
-              <TableCell align="center">Number of Batteries</TableCell>
+              <TableCell align="center">AcademyId</TableCell>
+              <TableCell align="center">Batteries Amount</TableCell>
               <TableCell align="center">Issues</TableCell>
             </TableRow>
           </TableHead>
