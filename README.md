@@ -1,6 +1,14 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Web application description 
+
+The application examines battery data from EInk-Tablets across various academies. Any devices that have a daily discharge rate exceeding 30% are identified as problematic and should be replaced.
+
+In my approach, I have chosen to give equal importance to all discharge intervals. I determine faulty batteries by examining the data for each battery and calculating the ratio of charge drops within 24-hour slots, and then averaging them. Batteries with only one or fewer samples are labeled as "unknown."
+
+As a result, you can view a list of academies sorted by the highest number of battery issues. Clicking on each academy will provide a detailed description.
+
+My intention was to experiment with a different UI framework, and I settled on Material UI due to its built-in CSS functionality and responsive UI.
 
 ## Available Scripts
 

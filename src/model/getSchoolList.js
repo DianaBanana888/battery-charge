@@ -7,15 +7,14 @@ const getInfo = (item) => (
       });
     }, {})
 )
-const schoolList = (props) => {
-  let generatedUnicorn = [];
-  const newArray = props;
-  newArray?.map((item) => (
-    generatedUnicorn.find((el) => el.academyId === item.academyId)
-      ? generatedUnicorn.find((el) => el.academyId === item.academyId).academyDetails.push(
+const schoolList = (initialData) => {
+  let resultSchoolArray = [];
+  initialData?.forEach((item) => (
+    resultSchoolArray.find((el) => el.academyId === item.academyId)
+      ? resultSchoolArray.find((el) => el.academyId === item.academyId).academyDetails.push(
         getInfo(item)
       )
-      : generatedUnicorn.push({
+      : resultSchoolArray.push({
         'academyId': item.academyId,
         'academyDetails': [
           getInfo(item)
@@ -23,6 +22,6 @@ const schoolList = (props) => {
       })
 
   ))
-  return generatedUnicorn;
+  return resultSchoolArray;
 };
 export { schoolList };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { schoolList } from "../model/getSchoolList"
 import { batteryList } from "../model/getBatteryList"
-import { batteryStatus } from "../model/getBatteryStatus"
+import { batteryConsumption } from "../model/getBatteryConsumption"
 import { sortByIssues } from "../model/sortByIssues"
 
 import Box from '@mui/material/Box';
@@ -19,19 +19,19 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 export default function SchoolBatteryInformation({ props }) {
-  const [open, setOpen] = useState({ show: false, openAcademyInfo: 0 });
+  const [fold, setFold] = useState({ show: false, foldAcademyInfo: 0 });
 
-  function Row(props) {
-    const { row } = props;
+  function Row({ row }) {
+    // const { row } = props;
     return (
       <React.Fragment>
-        <TableRow onClick={() => setOpen({ show: open.openAcademyInfo !== row.academyId ? true : !open.show, openAcademyInfo: open.openAcademyInfo !== row.academyId ? row.academyId : 0 })}>
+        <TableRow onClick={() => setFold({ show: fold.foldAcademyInfo !== row.academyId ? true : !fold.show, foldAcademyInfo: fold.foldAcademyInfo !== row.academyId ? row.academyId : 0 })}>
           {row.academyDetails.length && <TableCell>
             <IconButton
               aria-label="expand row"
               size="small"
             >
-              {(open.show && open.openAcademyInfo === row.academyId) ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              {(fold.show && fold.foldAcademyInfo === row.academyId) ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>}
           <TableCell align="center" component="th" scope="row">
@@ -44,7 +44,7 @@ export default function SchoolBatteryInformation({ props }) {
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open.show && open.openAcademyInfo === row.academyId} timeout='auto' unmountOnExit>
+            <Collapse in={fold.show && fold.foldAcademyInfo === row.academyId} timeout='auto' unmountOnExit>
               <Box
                 sx={{
                   margin: 1,
@@ -84,10 +84,10 @@ export default function SchoolBatteryInformation({ props }) {
   }
 
 
-  //////////////////
+  //////////////////model calls///////
   const getSchoolsList = schoolList(props)
   const getBatteryList = getSchoolsList.map((school) => Object.assign({}, { 'academyId': school.academyId }, { 'academyDetails': batteryList(school.academyDetails) }))
-  getBatteryList.map((school) => school.academyDetails.map((battery) => battery.consumption = batteryStatus(battery.batteryDetails)))
+  getBatteryList.forEach((school) => school.academyDetails.map((battery) => battery.consumption = batteryConsumption(battery.batteryDetails)))
   sortByIssues(getBatteryList);
 
   return (

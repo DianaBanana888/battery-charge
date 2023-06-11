@@ -1,6 +1,6 @@
-const batteryStatus = (details) => {
+const batteryConsumption = (details) => {
   if (details.length <= 1) return 'unknown';
-  const testArray = [];
+  const ratioArray = [];
   let dischargeIndexStart = 0
   let dischargeIndexStop = 0
 
@@ -18,18 +18,19 @@ const batteryStatus = (details) => {
         const consumptionDifference = details[dischargeIndexStart].batteryLevel - details[dischargeIndexStop].batteryLevel
         if (consumptionDifference > 0) {
           const ratio = (consumptionDifference / timeDifference) * 24 * 60 * 60 * 1000;
-          testArray.push(ratio)
+          ratioArray.push(ratio)
         }
       }
       dischargeIndexStop = index
       dischargeIndexStart = index
     }
   }
-  if (testArray.length > 0) {
-    const sum = testArray.reduce((a, b) => a + b, 0);
-    const avg = parseFloat((sum / testArray.length).toFixed(2));
+
+  if (ratioArray.length > 0) {
+    const sum = ratioArray.reduce((a, b) => a + b, 0);
+    const avg = parseFloat((sum / ratioArray.length).toFixed(2));
     return avg
   } else { return 'unknown' };
 
 };
-export { batteryStatus };
+export { batteryConsumption };

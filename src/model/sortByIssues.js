@@ -5,13 +5,12 @@ const calculatedIssues = (array) => {
   return total || 0;
 };
 
-const sortByIssues = (props) => {
-  const newArray = props;
-  newArray?.forEach((academy) => (
+const sortByIssues = (sortArray) => {
+  sortArray?.forEach((academy) => (
     academy.issues = calculatedIssues(academy.academyDetails))
   );
 
-  newArray.sort((a, b) => b.issues - a.issues);
-  return newArray;
+  sortArray.sort((a, b) => b.issues - a.issues);
+  return sortArray;
 };
 export { sortByIssues };

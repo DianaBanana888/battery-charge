@@ -9,20 +9,19 @@ const getInfo = (item) => (
 )
 
 const batteryList = (arrayWithAcademyDetails) => {
-  let generatedUnicorn = [];
-  const newArray = arrayWithAcademyDetails;
-  newArray?.map((item) => (
-    !generatedUnicorn.find((el) => el.serialNumber === item.serialNumber)
-      ? generatedUnicorn.push({
+  let resultBatteryArray = [];
+  arrayWithAcademyDetails?.forEach((item) => (
+    !resultBatteryArray.find((el) => el.serialNumber === item.serialNumber)
+      ? resultBatteryArray.push({
         'serialNumber': item.serialNumber,
         'batteryDetails': [
           getInfo(item)
         ]
       })
-      : generatedUnicorn.find((el) => el.serialNumber === item.serialNumber && el.batteryDetails.push(
+      : resultBatteryArray.find((el) => el.serialNumber === item.serialNumber && el.batteryDetails.push(
         getInfo(item)
       ))
   ))
-  return generatedUnicorn;
+  return resultBatteryArray;
 };
 export { batteryList };
